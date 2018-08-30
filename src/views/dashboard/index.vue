@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
-     <router-view></router-view>
+  <div id="yibiao">
+    /dashboard/index
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'dashboard'
 }
 </script>
