@@ -1,4 +1,4 @@
-import { loginAction } from '@/api/login'
+import { LoginAction } from '@/api/login'
 
 const user = {
     state: {
@@ -14,11 +14,11 @@ const user = {
     },
 
     actions: {
-        // 用户登录
+        // 用户登录        
         LoginToSystem({ commit }, param) {
-            const user = param.user.tirm()
+            const user = param.user.trim()
             return new Promise((resolve, reject) => {
-                loginAction(user, param.pass,param.remenber).then(response => {
+                LoginAction(user, param.pass,param.remenber).then(response => {
                     const data = response.data
                     commit('SET_TOKEN',data.token)
                     resolve()

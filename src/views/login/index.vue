@@ -39,56 +39,61 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      const validateUsername = (rule, value, callback) => {
-        if (!isvalidUsername(value)) {
-          callback(new Error('Please enter the correct user name'))
-        } else {
-          callback()
-        }
+export default {
+  data() {
+    const validateUsername = (rule, value, callback) => {
+      if (!isvalidUsername(value)) {
+        callback(new Error("Please enter the correct user name"));
+      } else {
+        callback();
       }
-      const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('The password can not be less than 6 digits'))
-        } else {
-          callback()
-        }
+    };
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error("The password can not be less than 6 digits"));
+      } else {
+        callback();
       }
-      return {
-        loginParam: {
-          user: 'admin',
-          pass: 'admin',
-          remenber: false
-        },
-        loginRules: {
-          user:[{ required: true, trigger: 'blur', validator: validateUsername }],
-          pass:[{ required: true, trigger: 'blur', validator: validatePassword }]
-        },
-        loading: false
-      }
-    },
-    methods: {
-      login() {
-        this.$refs.form.validate( valid => {
-          this.loading = true
-          if( valid ){
-            this.$store.dispatch('loginToSystem',this.loginParam).then( () => {
-              this.$router.push({ path: '/' })
-            }).catch( () => {
-              this.loading = false
-              this.$message.error('login fail');
+    };
+    return {
+      loginParam: {
+        user: "admin",
+        pass: "admin",
+        remenber: false
+      },
+      loginRules: {
+        user: [
+          { required: true, trigger: "blur", validator: validateUsername }
+        ],
+        pass: [{ required: true, trigger: "blur", validator: validatePassword }]
+      },
+      loading: false
+    };
+  },
+  methods: {
+    login() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          this.$store
+            .dispatch("LoginToSystem", this.loginParam)
+            .then(() => {
+              this.$router.push({ path: "/" });
             })
-          } else {
-            this.$message.error('error submit!!');
-            return false;
-          }
-        })
-      }
+            .catch(() => {
+              this.loading = false;
+              this.$message.error("login fail");
+            });
+        } else {
+          this.$message.error("error submit!!");
+          return false;
+        }
+      });
     }
   }
+};
 </script>
 
 <style lang="less">
-  @import "login.less";
+@import "login.less";
 </style>
