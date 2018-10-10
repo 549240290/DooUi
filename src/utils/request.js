@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
-import store from '@/store'
-//import { getToken } from '@/utils/auth'
+import store from '@/store/index.js'
+const qs = require('qs');
 
 // create an axios instance
 const service = axios.create({
@@ -12,16 +11,23 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    //console.log(store.getters.token)
     // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
       //config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = store.getters.token
     }
+
+    if (config.method == 'post') {
+      config.headers['Accept'] = 'application/json'
+      config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+      config.data = qs.stringify(config.data)
+    }
+
     return config
   },
   error => {
-    // Do something with request error
-    console.log(error) // for debug
     Promise.reject(error)
   }
 )
@@ -63,12 +69,13 @@ service.interceptors.response.use(
   //   }
   // },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    //console.log(error)
+    //console.log('err' + error) // for debug
+    // Message({
+    //   message: 'error',
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
     return Promise.reject(error)
   }
 )

@@ -1,46 +1,34 @@
 import { loginAction, currentUserAction } from '@/api/user'
-const user = {
+
+const app = {
     state: {
-        name: '',
-        email: '',
-        roles: [],
-        status: '',
         token: localStorage.token,
-        avatar: ''
+        user: null,
     },
 
     mutations: {
-        set_name: (state, name) => {
-            state.name = name
-        },
-        set_email: (state, email) => {
-            state.email = email
-        },
-        set_roles: (state, roles) => {
-            state.roles = roles
-        },
-        set_status: (state, status) => {
-            state.status = status
-        },
         set_token: (state, token) => {
             state.token = token
         },
-        set_avatar: (state, avatar) => {
-            state.avatar = avatar
+
+        set_user: (state, user) => {
+            state.user = user
         }
     },
 
     actions: {
-        quit( { commit } ) {
-            commit('set_token','')
+        //退出
+        logout({ commit }) {
             localStorage.removeItem('token')
+            commit('set_token', null)
         },
         // 用户登录        
         login({ commit }, param) {
             return new Promise((resolve, reject) => {
                 loginAction(param.username, param.password, param.remenber).then(response => {
-                    localStorage.token = 'Bearer ' + response.data.access_token
-                    commit('set_token', localStorage.token)
+                    let token = 'Bearer ' + response.data.access_token
+                    localStorage.token = token
+                    commit('set_token', token)
                     resolve(response.data)
                 }).catch(error => {
                     reject(error)
@@ -52,8 +40,7 @@ const user = {
         currentUser({ commit }) {
             return new Promise((resolve, reject) => {
                 currentUserAction().then(response => {
-                    commit('set_name', response.data.name)
-                    commit('set_email', response.data.email)
+                    commit('set_user', response.data)
                     resolve(response.data)
                 }).catch(error => {
                     reject(error)
@@ -63,4 +50,4 @@ const user = {
     }
 }
 
-export default user
+export default app

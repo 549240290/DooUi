@@ -9,7 +9,7 @@
         <el-input
             placeholder="请输入用户名"
             prefix-icon="fa fa-user"
-            v-model="loginParam.user"
+            v-model="loginParam.username"
             style="margin-bottom: 18px"
         >
         </el-input>
@@ -17,22 +17,19 @@
         <el-input
             placeholder="请输入密码"
             prefix-icon="fa fa-keyboard-o"
-            v-model="loginParam.pass"
+            v-model="loginParam.password"
             type="password"
             style="margin-bottom: 18px"
-            @keyup.native.enter="login"
+            @keyup.native.enter="handleLogin"
         >
         </el-input>
 
         <el-button
             type="primary" :loading="loading"
             style="width: 100%;margin-bottom: 18px"
-            @click.native="login"
+            @click.native="handleLogin"
         >登录
         </el-button>
-        <div>
-          <el-checkbox v-model="loginParam.remenber">记住我</el-checkbox>
-        </div>
       </el-form>
     </div>
   </div>
@@ -41,51 +38,38 @@
 <script>
 export default {
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
-      } else {
-        callback();
-      }
-    };
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
-      } else {
-        callback();
-      }
-    };
     return {
       loginParam: {
-        user: "admin",
-        pass: "admin",
-        remenber: false
+        username: 'aufree@yousails.com',
+        password: 'password'
       },
       loginRules: {
-        user: [
-          { required: true, trigger: "blur", validator: validateUsername }
+        username: [
+          
         ],
-        pass: [{ required: true, trigger: "blur", validator: validatePassword }]
+        password: [
+
+        ]
       },
       loading: false
     };
   },
   methods: {
-    login() {
+    handleLogin() {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;
           this.$store
-            .dispatch("LoginToSystem", this.loginParam)
-            .then(() => {
-              this.$router.push({ path: "/" });
+            .dispatch("login", this.loginParam)
+            .then( () => {
+                this.$router.push({ path: "/" });
             })
-            .catch(() => {
-              this.loading = false;
-              this.$message.error("login fail");
-            });
+            .catch( () => {
+              this.loading = false              
+              this.$message.error('请求失败')              
+            })
         } else {
-          this.$message.error("error submit!!");
+          this.$message.error("error submit!!")
           return false;
         }
       });
@@ -94,6 +78,6 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import "login.less";
 </style>

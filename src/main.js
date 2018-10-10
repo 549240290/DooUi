@@ -5,7 +5,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'normalize.css/normalize.css'
 import 'font-awesome/css/font-awesome.css'
-import App from './App.vue'
+import app from './app'
+import './permission'
 
 
 Vue.use(ElementUI)
@@ -15,5 +16,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(app)
 });

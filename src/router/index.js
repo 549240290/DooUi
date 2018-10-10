@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/views/layout/index'
+import Layout from '@/views/layout'
 
 export const constantRouterMap = [
   {
@@ -13,38 +13,34 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
-    redirect: 'dashboard',
+    redirect: 'home',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard'
+        path: 'home',
+        component: () => import('@/views/home/index'),
+        name: 'home',
+        meta: {
+          title:'首页',
+          keepAlive: true
+        }
       }
     ]
   },
-//   {
-//     path: '/guide',
-//     component: Layout,
-//     redirect: '/guide/index',
-//     children: [
-//       {
-//         path: 'index',
-//         component: () => import('@/views/guide/index'),
-//         name: 'Guide',
-//         meta: { title: 'guide', icon: 'guide', noCache: true }
-//       }
-//     ]
-//   }
+  {
+    path: '/404',
+    component: () => import('@/views/error/404'),
+    hidden: true
+  },
+  {
+    path: '/401',
+    component: () => import('@/views/error/401'),
+    hidden: true
+  },
 ]
 
 export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  mode: 'history',
   routes: constantRouterMap
 })
-
-export const asyncRouterMap = [
-  
-]

@@ -26,7 +26,7 @@
       </div>
       <div class="app-body">
         <nav-bar id="nav-bar" style="position: fixed;top: 0;width:100%"></nav-bar>
-        <div id="mainContainer" style="margin-top: 88px;" class="main-container">
+        <div id="mainContainer" class="main-container">
           <!--<transition name="fade">-->
             <router-view></router-view>
           <!--</transition>-->
@@ -38,7 +38,7 @@
 
 <script>
 import menuBar from '@/components/menuBar'
-import navBar from './components/navBar'
+import navBar from '@/components/navBar'
 export default {
   name: 'Layout',
   components: {
@@ -109,7 +109,8 @@ export default {
     transition: margin-left 0.3s ease-in-out;
   }
   .main-container {
-    //margin-top: 50px;
+    background-color: #fff;
+    margin: 95px 8px 8px;
     padding: 6px;
     min-height: calc(~"100vh - 15px");
   }
